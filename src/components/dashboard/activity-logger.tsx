@@ -61,32 +61,50 @@ export default function ActivityLogger({ addActivity }: ActivityLoggerProps) {
             <FormField
               control={form.control}
               name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Activity Type</FormLabel>
-                  <Select onValueChange={(value) => {
-                    field.onChange(value);
-                    setActivityType(value as 'exercise' | 'meal' | 'water');
-                  }} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
+              render={({ field }) => {
+                // `useFormField` hook needs to be called inside a component that is a child of FormItem.
+                // To achieve this, we can define a small helper component or use the props directly if accessible.
+                // For this specific case, we will call useFormField inside the render prop,
+                // as FormItem establishes the necessary context.
+                const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
+
+                return (
+                  <FormItem>
+                    <FormLabel>Activity Type</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value); // RHF's onChange
+                        setActivityType(value as 'exercise' | 'meal' | 'water');
+                      }}
+                      defaultValue={field.value} // RHF's value
+                    >
+                      <SelectTrigger
+                        ref={field.ref} // RHF's ref
+                        id={formItemId} // from useFormField
+                        aria-describedby={
+                          !error
+                            ? formDescriptionId
+                            : `${formDescriptionId} ${formMessageId}`
+                        } // from useFormField
+                        aria-invalid={!!error} // from useFormField
+                      >
                         <SelectValue placeholder="Select an activity type" />
                       </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="exercise">Exercise</SelectItem>
-                      <SelectItem value="meal">Meal</SelectItem>
-                      <SelectItem value="water">Water</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+                      <SelectContent>
+                        <SelectItem value="exercise">Exercise</SelectItem>
+                        <SelectItem value="meal">Meal</SelectItem>
+                        <SelectItem value="water">Water</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage /> {/* FormMessage also uses useFormField internally */}
+                  </FormItem>
+                );
+              }}
             />
 
             {activityType === 'exercise' && (
               <>
-                <FormField control={form.control} name="name" render={({ field }) => ( <FormItem> <FormLabel>Exercise Name</FormLabel> <FormControl> <Input placeholder="e.g., Running" {...field} /> </FormControl> <FormMessage /> </FormItem> )} />
+                <FormField control={form.control} name="name" render={({ field }) => ( <FormItem> <FormLabel>Exercise Name</Label> <FormControl> <Input placeholder="e.g., Running" {...field} /> </FormControl> <FormMessage /> </FormItem> )} />
                 <FormField control={form.control} name="duration" render={({ field }) => ( <FormItem> <FormLabel>Duration (minutes)</FormLabel> <FormControl> <Input type="number" placeholder="e.g., 30" {...field} /> </FormControl> <FormMessage /> </FormItem> )} />
               </>
             )}
@@ -102,7 +120,7 @@ export default function ActivityLogger({ addActivity }: ActivityLoggerProps) {
                 <FormField control={form.control} name="quantity" render={({ field }) => ( <FormItem> <FormLabel>Quantity (glasses)</FormLabel> <FormControl> <Input type="number" placeholder="e.g., 8" {...field} /> </FormControl> <FormMessage /> </FormItem> )} />
             )}
 
-            <Button type="submit" className="w-full" asChild>
+            <Button type="submit" className="w-full">
               <span className="flex items-center justify-center gap-2">
                 <Plus />
                 Add Activity
