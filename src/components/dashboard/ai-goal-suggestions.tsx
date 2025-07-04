@@ -64,22 +64,24 @@ export default function AiGoalSuggestions({ activities, metrics }: AiGoalSuggest
                 </CardDescription>
             </div>
           <Button onClick={handleSuggestGoals} disabled={loading}>
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <RefreshCw className="h-4 w-4 animate-spin" />
-                <span>Generating...</span>
-              </span>
-            ) : goals.length > 0 ? (
-              <span className="flex items-center justify-center gap-2">
-                <RefreshCw className="h-4 w-4" />
-                <span>Regenerate Goals</span>
-              </span>
-            ) : (
-              <span className="flex items-center justify-center gap-2">
-                <Sparkles className="h-4 w-4" />
-                <span>Suggest Goals</span>
-              </span>
-            )}
+            <span className="inline-flex items-center justify-center gap-2">
+              {loading ? (
+                <>
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                  Generating...
+                </>
+              ) : goals.length > 0 ? (
+                <>
+                  <RefreshCw className="h-4 w-4" />
+                  Regenerate Goals
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4" />
+                  Suggest Goals
+                </>
+              )}
+            </span>
           </Button>
         </div>
       </CardHeader>
