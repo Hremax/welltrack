@@ -49,6 +49,31 @@ export default function AiGoalSuggestions({ activities, metrics }: AiGoalSuggest
       prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
     );
   };
+  
+  const renderButtonContent = () => {
+    if (loading) {
+      return (
+        <span className="flex items-center justify-center gap-2">
+          <RefreshCw className="h-4 w-4 animate-spin" />
+          Generating...
+        </span>
+      );
+    }
+    if (goals.length > 0) {
+      return (
+        <span className="flex items-center justify-center gap-2">
+          <RefreshCw className="h-4 w-4" />
+          Regenerate Goals
+        </span>
+      );
+    }
+    return (
+      <span className="flex items-center justify-center gap-2">
+        <Sparkles className="h-4 w-4" />
+        Suggest Goals
+      </span>
+    );
+  };
 
   return (
     <Card className="bg-white/40 backdrop-blur-md border-white/20 shadow-lg">
@@ -63,25 +88,8 @@ export default function AiGoalSuggestions({ activities, metrics }: AiGoalSuggest
                     Let our AI suggest achievable daily goals for you.
                 </CardDescription>
             </div>
-          <Button onClick={handleSuggestGoals} disabled={loading}>
-            <span className="inline-flex items-center justify-center gap-2">
-              {loading ? (
-                <>
-                  <RefreshCw className="h-4 w-4 animate-spin" />
-                  Generating...
-                </>
-              ) : goals.length > 0 ? (
-                <>
-                  <RefreshCw className="h-4 w-4" />
-                  Regenerate Goals
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4" />
-                  Suggest Goals
-                </>
-              )}
-            </span>
+          <Button onClick={handleSuggestGoals} disabled={loading} asChild>
+            {renderButtonContent()}
           </Button>
         </div>
       </CardHeader>

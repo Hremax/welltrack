@@ -102,8 +102,8 @@ export default function ActivityLogger({ addActivity }: ActivityLoggerProps) {
                 <FormField control={form.control} name="quantity" render={({ field }) => ( <FormItem> <FormLabel>Quantity (glasses)</FormLabel> <FormControl> <Input type="number" placeholder="e.g., 8" {...field} /> </FormControl> <FormMessage /> </FormItem> )} />
             )}
 
-            <Button type="submit" className="w-full">
-              <span className="inline-flex items-center justify-center gap-2">
+            <Button type="submit" className="w-full" asChild>
+              <span className="flex items-center justify-center gap-2">
                 <Plus />
                 Add Activity
               </span>
