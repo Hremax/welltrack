@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import type { Activity } from '@/lib/types';
@@ -103,7 +103,7 @@ export default function ActivityLogger({ addActivity }: ActivityLoggerProps) {
             )}
 
             <Button type="submit" className="w-full">
-              <span className="inline-flex items-center gap-2">
+              <span className="flex items-center justify-center gap-2">
                 <Plus />
                 <span>Add Activity</span>
               </span>

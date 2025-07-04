@@ -40,7 +40,6 @@ export default function MetricTracker({ addMetric }: MetricTrackerProps) {
   }
   
   const moodLabels = ["", "Very Bad", "Bad", "Neutral", "Good", "Very Good"];
-  const moodValue = form.watch('mood');
 
   return (
     <Card className="bg-white/40 backdrop-blur-md border-white/20 shadow-lg">
@@ -83,13 +82,13 @@ export default function MetricTracker({ addMetric }: MetricTrackerProps) {
               name="mood"
               render={({ field }) => (
                 <FormItem>
-                   <FormLabel className="flex items-center gap-2"><Smile className="h-4 w-4 text-primary" /> Mood Level: <span className="font-bold text-primary">{moodLabels[moodValue || 3]}</span></FormLabel>
+                   <FormLabel className="flex items-center gap-2"><Smile className="h-4 w-4 text-primary" /> Mood Level: <span className="font-bold text-primary">{moodLabels[field.value || 3]}</span></FormLabel>
                   <FormControl>
                     <Slider
                       min={1}
                       max={5}
                       step={1}
-                      defaultValue={[field.value || 3]}
+                      value={[field.value || 3]}
                       onValueChange={(value) => field.onChange(value[0])}
                     />
                   </FormControl>
